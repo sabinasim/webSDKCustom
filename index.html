@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+        <!-- CSS only -->
+        <link rel="stylesheet" href="main.css">
+        <link rel="icon" type="image/x-icon" href="img/original.png">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+        <!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+        <title>Sabinole</title>
+
+        <!-- braze web sdk -->
+        <script type="text/javascript">
+            +function(a,p,P,b,y){a.braze={};a.brazeQueue=[];for(var s="BrazeSdkMetadata DeviceProperties Card Card.prototype.dismissCard Card.prototype.removeAllSubscriptions Card.prototype.removeSubscription Card.prototype.subscribeToClickedEvent Card.prototype.subscribeToDismissedEvent Card.fromContentCardsJson Banner CaptionedImage ClassicCard ControlCard ContentCards ContentCards.prototype.getUnviewedCardCount Feed Feed.prototype.getUnreadCardCount ControlMessage InAppMessage InAppMessage.SlideFrom InAppMessage.ClickAction InAppMessage.DismissType InAppMessage.OpenTarget InAppMessage.ImageStyle InAppMessage.Orientation InAppMessage.TextAlignment InAppMessage.CropType InAppMessage.prototype.closeMessage InAppMessage.prototype.removeAllSubscriptions InAppMessage.prototype.removeSubscription InAppMessage.prototype.subscribeToClickedEvent InAppMessage.prototype.subscribeToDismissedEvent InAppMessage.fromJson FullScreenMessage ModalMessage HtmlMessage SlideUpMessage User User.Genders User.NotificationSubscriptionTypes User.prototype.addAlias User.prototype.addToCustomAttributeArray User.prototype.addToSubscriptionGroup User.prototype.getUserId User.prototype.incrementCustomUserAttribute User.prototype.removeFromCustomAttributeArray User.prototype.removeFromSubscriptionGroup User.prototype.setCountry User.prototype.setCustomLocationAttribute User.prototype.setCustomUserAttribute User.prototype.setDateOfBirth User.prototype.setEmail User.prototype.setEmailNotificationSubscriptionType User.prototype.setFirstName User.prototype.setGender User.prototype.setHomeCity User.prototype.setLanguage User.prototype.setLastKnownLocation User.prototype.setLastName User.prototype.setPhoneNumber User.prototype.setPushNotificationSubscriptionType InAppMessageButton InAppMessageButton.prototype.removeAllSubscriptions InAppMessageButton.prototype.removeSubscription InAppMessageButton.prototype.subscribeToClickedEvent automaticallyShowInAppMessages destroyFeed hideContentCards showContentCards showFeed showInAppMessage toggleContentCards toggleFeed changeUser destroy getDeviceId initialize isPushBlocked isPushPermissionGranted isPushSupported logCardClick logCardDismissal logCardImpressions logContentCardImpressions logContentCardsDisplayed logCustomEvent logFeedDisplayed logInAppMessageButtonClick logInAppMessageClick logInAppMessageHtmlClick logInAppMessageImpression logPurchase openSession requestPushPermission removeAllSubscriptions removeSubscription requestContentCardsRefresh requestFeedRefresh requestImmediateDataFlush enableSDK isDisabled setLogger setSdkAuthenticationSignature addSdkMetadata disableSDK subscribeToContentCardsUpdates subscribeToFeedUpdates subscribeToInAppMessage subscribeToSdkAuthenticationFailures toggleLogging unregisterPush wipeData handleBrazeAction".split(" "),i=0;i<s.length;i++){for(var m=s[i],k=a.braze,l=m.split("."),j=0;j<l.length-1;j++)k=k[l[j]];k[l[j]]=(new Function("return function "+m.replace(/\./g,"_")+"(){window.brazeQueue.push(arguments); return true}"))()}window.braze.getCachedContentCards=function(){return new window.braze.ContentCards};window.braze.getCachedFeed=function(){return new window.braze.Feed};window.braze.getUser=function(){return new window.braze.User};(y=p.createElement(P)).type='text/javascript';
+              y.src='https://js.appboycdn.com/web-sdk/4.2/braze.min.js';
+              y.async=1;(b=p.getElementsByTagName(P)[0]).parentNode.insertBefore(y,b)
+            }(window,document,'script');
+
+            // initialize the SDK
+            braze.initialize('c8610a4e-636f-4e3b-87d1-1acd128017a9', {
+                allowUserSuppliedJavascript: true,
+                baseUrl: "sdk.iad-03.braze.com",
+                enableLogging: true
+            });
+
+            // optionally show all in-app messages without custom handling
+            //braze.automaticallyShowInAppMessages();
+
+            //this ins manually showing the message if the show waiting iam button
+            braze.subscribeToInAppMessage(function(inAppMessage) {
+            console.log('this is from subscribetoIAM', inAppMessage);
+
+            getTriggeredIAM.onclick = function() {
+                if (inAppMessage) {
+                braze.showInAppMessage(inAppMessage);
+                }
+            }
+            
+            document.getElementById("customModalTitle").innerHTML = inAppMessage.header;
+            document.getElementById("customModalBody").innerHTML = inAppMessage.message;
+            document.getElementById("customModalBtn").innerHTML = inAppMessage.buttons[0].text;
+
+            });
+
+
+            // if you use Content Cards must call this before open session
+            braze.subscribeToContentCardsUpdates(function(update){
+                const cards = update.cards;
+                console.log('this is from subscribeToContentcardUpdates', cards);
+
+                // iterate through the card obj, store the data into variables to call for sensible naming
+                for (let i of cards) {
+                    console.log("this is from the loop" + i.title, i.description);
+                    const card_id = i.id;
+                    const card_body = i.description;
+                    const card_title = i.title;
+                    const img_URL = i.imageUrl;
+                    const card_updated = i.updated;
+
+
+
+                    document.getElementById("cardTitle").innerHTML = card_title;
+                    document.getElementById("cardBody").innerHTML = card_body;
+                    document.getElementById("CardImgDisplay").innerHTML = "<img src="+img_URL+">";
+                    document.getElementById("cardUpdated").innerHTML = card_updated; //raw time data
+
+                    document.getElementById("cardTitle2").innerHTML = card_title;
+                    document.getElementById("cardBody2").innerHTML = card_body;
+                    document.getElementById("CardImgDisplay2").innerHTML = "<img src="+img_URL+">";
+                    document.getElementById("cardUpdated2").innerHTML = card_updated.toLocaleString(); //to convert to localtime
+
+                    document.getElementById("cardTitle3").innerHTML = card_title;
+                    document.getElementById("cardBody3").innerHTML = card_body;
+                    document.getElementById("CardImgDisplay3").innerHTML = "<img src="+img_URL+">";
+                    document.getElementById("cardUpdated3").innerHTML = moment(card_updated).fromNow(); //uses the moment library
+
+                };
+
+                
+            });
+
+            // Be sure to call `openSession` after `automaticallyShowInAppMessages`
+            braze.openSession();
+            braze.toggleLogging();
+        </script>
+          
+    </head>
+    <body>
+        <div class="p-3 bg-dark text-white">
+            <p class="fs-2 fw-bolder text-center">Sabina Web SDK Project</p>
+            <p class="text-muted text-end fw-light">-- a custom production</p>
+        </div>
+        <!-- this is the setting for entire page to have some padding-->
+        <div class="col-lg 8 mx-auto p-3">
+            <!-- main body of the page -->
+            <main>
+                <div class="mb-3">
+                    <h4>Objectives:</h4>
+                    <ul class="list-group">
+                        <li class="list-group-item">Understanding and customisation of Content Cards & In-App Messaging</li>
+                        <li class="list-group-item">Create a prototype for technical support team to use as a supplement to test/experiment customisation</li>
+                    </ul>
+                </div>
+                <div class="mb-2">
+                    <h3 class="mb-4 p-2 bg-dark text-white border border-secondary border-start-0 rounded-end">Sending User Attributes</h3>
+                    <!-- get the current device id/current user to display-->
+                    <script>
+                        braze.getDeviceId(function(deviceId) {
+                        console.log('The device id is ' + deviceId);
+                        let currentId = "DeviceId : " + deviceId;
+                        document.getElementById('displayCurrentId').innerHTML = currentId;
+                        });
+
+                        braze.getUser().getUserId(function(userId) {
+                        console.log('The user is ' + userId);
+                        let currentUser = "User ID : " + userId;
+                        document.getElementById('displayCurrentUser').innerHTML = currentUser;
+                        });
+                    </script>
+                    <div class="mb-2 border-top border-bottom w-75">
+                        <span class="text-success" id="displayCurrentId"></span>
+                    </div>
+                    <div class="mb-3 border-top border-bottom w-75">
+                        <span class="text-success" id="displayCurrentUser"></span>
+                    </div>
+                    <!-- submit email and changeUser() -->
+                    <div class="input-group mb-3 w-75">
+                        <span class="input-group-text text-bg-light">@</span>
+                        <input type="text" id="email_input" class="form-control " placeholder="Enter email here">
+                        <button class="btn btn-outline-primary" type="button" id="changeUser_button">Create</button>
+                    </div>
+                    <div class="input-group mb-3 w-75">
+                        <span class="input-group-text text-bg-light">Login ID</span>
+                        <input type="text" id="userid_input" class="form-control " placeholder="Enter User ID">
+                        <button class="btn btn-outline-primary" type="button" id="login_button">Login</button>
+                    </div>
+                    <!-- submit custom attributes -->
+                    <div class="input-group mb-3 w-75">
+                        <input type="text" id="customattribute_name" class="form-control" placeholder="Custom Attribute Name">
+                        <span class="input-group-text text-bg-light">:</span>
+                        <input type="text" id="customattribute_value" class="form-control" placeholder="Custom Attribute Value">
+                        <button class="btn btn-outline-primary" type="button" id="customAttribute_button">Submit</button>
+                    </div>
+
+                    <!-- submit custom events with properties as optional-->
+                    <div class="input-group mb-3 w-75">
+                        <input type="text" id="customevent_name" class="form-control" placeholder="Custom Event Name">
+                        <span class="input-group-text text-bg-light">:</span>
+                        <input type="text" id="customevent_value" class="form-control" placeholder="destination:'bkk'">
+                        <button class="btn btn-outline-primary" type="button" id="customEvent_button">Submit</button>
+                    </div>
+                    
+                    <a class="btn btn-primary btn-sm" href="https://dashboard-03.braze.com/dashboard/app_usage/app-usage/61a440f3e718d36c46c3c304?appIds=62dff64463c4002952a6cb0a&start=1656216000&end=1658807999&locale=en" target="_blank">Link to Braze Dashboard</a>
+
+                    
+                    <h3 class="mt-4 mb-4 mt-4 p-2 bg-dark text-white border border-secondary border-start-0 rounded-end">Content Cards</h3>
+
+                    <button class="btn btn-outline-secondary" id="toggle" type="button">Toggle Cards Feed</button>
+                    <button class="btn btn-outline-secondary" id="hide" type="button">Hide Cards Feed</button>
+                    <button class="btn btn-outline-secondary" id="show" type="button">Show Cards Feed</button>
+
+                    <nav class="m-3">
+                        <h4>Native Braze</h4>
+                        <div id="feed"></div>
+                    </nav>
+
+                    <script>
+
+                    const toggle = document.getElementById("toggle");
+                    const hide = document.getElementById("hide");
+                    const show = document.getElementById("show");
+                    const feed = document.getElementById("feed");
+                        
+                    toggle.onclick = function(){
+                        braze.toggleContentCards(feed);    
+                    }
+                        
+                    hide.onclick = function(){
+                        braze.hideContentCards();
+                    }
+                        
+                    show.onclick = function(){
+                        braze.showContentCards(feed);
+                    }
+
+                    </script>
+
+                    <!-- Custom Content Card bit -->
+                    <nav class="m-3 border-top pt-3">
+                        <h4>Custom Attempt:</h4>
+                        <div id="custom_feed" >
+                            <ul class="list-group">
+                                <li class="list-group-item"><div id="CardImgDisplay"></div></li>
+                                <li class="list-group-item"><b>Title:</b> <span id = "cardTitle"></span><br></li>
+                                <li class="list-group-item"><b>Body:</b> <span id = "cardBody"></span><br></li>
+                                <li class="list-group-item"><b>Last Updated:</b> <span id = "cardUpdated"></span><br></li>
+                            </ul>
+                        </div>
+                    </nav>
+
+                    <div class="border rounded container mb-3" style="max-width: 540px;">
+                        Custom Attempt 2
+                        <div class="row" id="custom_feed">
+                            <div class="col">
+                                <div class="col-10" id="cardTitle2">test-title</div>
+                                <div class="col-10" id="cardBody2">test-desc</div>
+                                <small class="col-10 text-muted" id="cardUpdated2"> Test-update</small>
+                            </div>
+                            <div class="col">
+                                <div class="col-6 mb-4" id="CardImgDisplay2">Test-img</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card m-3" style="max-width: 540px;">
+                        Custom Attempt 3
+                        <div class="row g-0" id="custom_feed">
+                            <div class="col-md-4 text-center">
+                                <div class="img-fluid rounded-start mt-3 mb-3" id="CardImgDisplay3">img</div>
+                            </div>
+                          <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title" id="cardTitle3">test</h5>
+                                    <p class="card-text" id="cardBody3">test</p>
+                                    <p class="card-text"><small class="text-muted" id="cardUpdated3">test</small></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="mt-5 mb-4 mt-4 p-2 bg-dark text-white border border-secondary border-start-0 rounded-end">In-App Messaging</h3>
+                    <button class="btn btn-outline-dark" id="showSlide" type="button">Show Slide IAM</button>
+                    <button class="btn btn-outline-dark" id="showModal" type="button">Show Modal IAM</button>
+                    <button class="btn btn-outline-dark" id="showFull" type="button">Show Full Message IAM</button>
+                    <button class="btn btn-outline-dark" id="showTrigIAM" type="button">Show Waiting IAM</button>
+
+                    <script>
+
+                        const slideIAM = document.getElementById("showSlide");
+                        const modalIAM = document.getElementById("showModal");
+                        const fullIAM = document.getElementById("showFull");
+                        const getTriggeredIAM = document.getElementById("showTrigIAM");
+                            
+                        slideIAM.onclick = function(){
+                            var message = new braze.SlideUpMessage("Welcome to Braze! This is an in-app message.");
+                            message.slideFrom = braze.InAppMessage.SlideFrom.TOP;
+                            braze.showInAppMessage(message);   
+                        }
+                            
+                        modalIAM.onclick = function() {
+                            var message = new braze.ModalMessage();
+                            var messageBtn1 = new braze.InAppMessageButton();
+                            var messageBtn2 = new braze.InAppMessageButton();
+                            message.header = "This is a local Modal IAM";
+                            message.message = "This is the message body";
+                            messageBtn1.text = "Button 1";
+                            //use hex color but replace # with 0xff
+                            messageBtn1.backgroundColor = 0xffff3300;
+                            messageBtn1.textColor = 0xffffffff;
+                            messageBtn1.id = "0";
+                            messageBtn2.text = "Button 2";
+                            messageBtn2.backgroundColor = 0xff3300ff;
+                            messageBtn2.textColor = 0xffffffff;
+                            messageBtn2.id = "1";
+                            message.buttons = [messageBtn1, messageBtn2];
+                            braze.showInAppMessage(message);
+
+                            // Registers that a user has viewed an in-app message with the Braze server.
+                            braze.logInAppMessageImpression(message);
+                            // Registers that a user has clicked on an in-app message with the Braze server.
+                            braze.logInAppMessageButtonClick(messageBtn1.id, message);
+                        }
+                            
+                        fullIAM.onclick = function(){
+                            var message = new braze.FullScreenMessage();
+                            braze.showInAppMessage(message);  
+                        }
+    
+                        </script>
+
+                        <h4 class="m-3">Modal Custom</h4>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Launch Bootstrap demo modal
+                        </button>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="customModalTitle" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="customModalTitle"></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body" id="customModalBody"></div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button id ="customModalBtn" type="button" class="btn btn-primary" data-bs-dismiss="modal"></button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        
+                </div>
+            </main>
+
+            <!-- this is the foot of page -->
+            <footer class="pt-5 my-5 text-muted border-top">
+                Created by Sabina Safarudin with Bootstrap & Braze Web SDK -  © 2022
+            </footer>
+
+
+        </div>
+        <script type="text/javascript" src="app.js"></script>
+    </body>
+</html>

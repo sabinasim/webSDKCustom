@@ -1,0 +1,15 @@
+/* #custom_feed {
+    display:none;
+} */
+
+body .ab-feed .ab-feed-body {
+    border-radius: 0px 0px 20px 20px;
+}
+
+body .ab-feed .ab-feed-buttons-wrapper {
+    background-color: darkcyan;
+}
+
+p, span, div, h3, h4 {
+    font-family: 'Open Sans', sans-serif;
+}
