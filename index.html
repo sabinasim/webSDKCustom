@@ -36,19 +36,27 @@
 
             //this ins manually showing the message if the show waiting iam button
             braze.subscribeToInAppMessage(function(inAppMessage) {
-            console.log('this is from subscribetoIAM', inAppMessage);
+                console.log('this is from subscribetoIAM', inAppMessage);
 
-            getTriggeredIAM.onclick = function() {
-                if (inAppMessage) {
-                braze.showInAppMessage(inAppMessage);
-                }
-            }
-            
-            document.getElementById("customModalTitle").innerHTML = inAppMessage.header;
-            document.getElementById("customModalBody").innerHTML = inAppMessage.message;
-            document.getElementById("customModalBtn").innerHTML = inAppMessage.buttons[0].text;
+                getTriggeredIAM.onclick = function() {
+                    if (inAppMessage) {
+                    braze.showInAppMessage(inAppMessage);
+                    }
+                };
 
+                
+                document.getElementById("customModalTitle").innerHTML = inAppMessage.header;
+                document.getElementById("customModalBody").innerHTML = inAppMessage.message;
+                document.getElementById("customModalBtn").innerHTML = inAppMessage.buttons[0].text;
+                console.log("customIAM innerHTML passed")
+
+                document.getElementById("customModalBtn").addEventListener("click", function() {
+                    braze.logInAppMessageImpression(inAppMessage);
+                    braze.logInAppMessageButtonClick(inAppMessage.buttons, inAppMessage);
+                    console.log("function log is called");
+                });
             });
+            
 
 
             // if you use Content Cards must call this before open session
@@ -94,9 +102,9 @@
           
     </head>
     <body>
-        <div class="p-3 bg-dark text-white">
+        <div class="p-3 bg-dark text-white bg-img">
             <p class="fs-2 fw-bolder text-center">Sabina Web SDK Project</p>
-            <p class="text-muted text-end fw-light">-- a custom production</p>
+            <p class="text-white text-end fw-light">-- a custom production</p>
         </div>
         <!-- this is the setting for entire page to have some padding-->
         <div class="col-lg 8 mx-auto p-3">
@@ -110,7 +118,7 @@
                     </ul>
                 </div>
                 <div class="mb-2">
-                    <h3 class="mb-4 p-2 bg-dark text-white border border-secondary border-start-0 rounded-end">Sending User Attributes</h3>
+                    <h3 class="mb-4 p-2 bg-dark text-white border border-secondary border-start-0 rounded-end bg-img">Sending User Attributes</h3>
                     <!-- get the current device id/current user to display-->
                     <script>
                         braze.getDeviceId(function(deviceId) {
@@ -135,19 +143,19 @@
                     <div class="input-group mb-3 w-75">
                         <span class="input-group-text text-bg-light">@</span>
                         <input type="text" id="email_input" class="form-control " placeholder="Enter email here">
-                        <button class="btn btn-outline-primary" type="button" id="changeUser_button">Create</button>
+                        <button class="btn btn-secondary" type="button" id="changeUser_button">Create</button>
                     </div>
                     <div class="input-group mb-3 w-75">
                         <span class="input-group-text text-bg-light">Login ID</span>
                         <input type="text" id="userid_input" class="form-control " placeholder="Enter User ID">
-                        <button class="btn btn-outline-primary" type="button" id="login_button">Login</button>
+                        <button class="btn btn-secondary" type="button" id="login_button">Login</button>
                     </div>
                     <!-- submit custom attributes -->
                     <div class="input-group mb-3 w-75">
                         <input type="text" id="customattribute_name" class="form-control" placeholder="Custom Attribute Name">
                         <span class="input-group-text text-bg-light">:</span>
                         <input type="text" id="customattribute_value" class="form-control" placeholder="Custom Attribute Value">
-                        <button class="btn btn-outline-primary" type="button" id="customAttribute_button">Submit</button>
+                        <button class="btn btn-secondary" type="button" id="customAttribute_button">Submit</button>
                     </div>
 
                     <!-- submit custom events with properties as optional-->
@@ -155,20 +163,20 @@
                         <input type="text" id="customevent_name" class="form-control" placeholder="Custom Event Name">
                         <span class="input-group-text text-bg-light">:</span>
                         <input type="text" id="customevent_value" class="form-control" placeholder="destination:'bkk'">
-                        <button class="btn btn-outline-primary" type="button" id="customEvent_button">Submit</button>
+                        <button class="btn btn-secondary" type="button" id="customEvent_button">Submit</button>
                     </div>
                     
-                    <a class="btn btn-primary btn-sm" href="https://dashboard-03.braze.com/dashboard/app_usage/app-usage/61a440f3e718d36c46c3c304?appIds=62dff64463c4002952a6cb0a&start=1656216000&end=1658807999&locale=en" target="_blank">Link to Braze Dashboard</a>
+                    <a class="btn btn-secondary btn-sm" href="https://dashboard-03.braze.com/dashboard/app_usage/app-usage/61a440f3e718d36c46c3c304?appIds=62dff64463c4002952a6cb0a&start=1656216000&end=1658807999&locale=en" target="_blank">Link to Braze Dashboard</a>
 
                     
-                    <h3 class="mt-4 mb-4 mt-4 p-2 bg-dark text-white border border-secondary border-start-0 rounded-end">Content Cards</h3>
+                    <h3 class="mt-4 mb-4 mt-4 p-2 bg-dark text-white border border-secondary border-start-0 rounded-end bg-img">Content Cards</h3>
 
                     <button class="btn btn-outline-secondary" id="toggle" type="button">Toggle Cards Feed</button>
                     <button class="btn btn-outline-secondary" id="hide" type="button">Hide Cards Feed</button>
                     <button class="btn btn-outline-secondary" id="show" type="button">Show Cards Feed</button>
 
                     <nav class="m-3">
-                        <h4>Native Braze</h4>
+                        <h4>Native Braze Content Cards</h4>
                         <div id="feed"></div>
                     </nav>
 
@@ -195,13 +203,13 @@
 
                     <!-- Custom Content Card bit -->
                     <nav class="m-3 border-top pt-3">
-                        <h4>Custom Attempt:</h4>
+                        <h4>Custom Content Cards</h4>
                         <div id="custom_feed" >
                             <ul class="list-group">
-                                <li class="list-group-item"><div id="CardImgDisplay"></div></li>
-                                <li class="list-group-item"><b>Title:</b> <span id = "cardTitle"></span><br></li>
-                                <li class="list-group-item"><b>Body:</b> <span id = "cardBody"></span><br></li>
-                                <li class="list-group-item"><b>Last Updated:</b> <span id = "cardUpdated"></span><br></li>
+                                <li class="list-group-item"><div id="CardImgDisplay">img</div></li>
+                                <li class="list-group-item"><b>Title:</b> <span id = "cardTitle">test</span><br></li>
+                                <li class="list-group-item"><b>Body:</b> <span id = "cardBody">test</span><br></li>
+                                <li class="list-group-item"><b>Last Updated:</b> <span id = "cardUpdated">test</span><br></li>
                             </ul>
                         </div>
                     </nav>
@@ -235,11 +243,12 @@
                             </div>
                         </div>
                     </div>
-                    <h3 class="mt-5 mb-4 mt-4 p-2 bg-dark text-white border border-secondary border-start-0 rounded-end">In-App Messaging</h3>
-                    <button class="btn btn-outline-dark" id="showSlide" type="button">Show Slide IAM</button>
-                    <button class="btn btn-outline-dark" id="showModal" type="button">Show Modal IAM</button>
-                    <button class="btn btn-outline-dark" id="showFull" type="button">Show Full Message IAM</button>
-                    <button class="btn btn-outline-dark" id="showTrigIAM" type="button">Show Waiting IAM</button>
+                    <h3 class="mt-5 mb-4 mt-4 p-2 bg-dark text-white border border-secondary border-start-0 rounded-end bg-img">In-App Messaging</h3>
+                    <h4 class="m-3">Braze Native Local IAM</h4>
+                    <button class="btn btn-outline-secondary" id="showSlide" type="button">Show Slide IAM</button>
+                    <button class="btn btn-outline-secondary" id="showModal" type="button">Show Modal IAM</button>
+                    <button class="btn btn-outline-secondary" id="showFull" type="button">Show Full Message IAM</button>
+                    <button class="btn btn-outline-secondary" id="showTrigIAM" type="button">Show Waiting IAM</button>
 
                     <script>
 
@@ -251,6 +260,7 @@
                         slideIAM.onclick = function(){
                             var message = new braze.SlideUpMessage("Welcome to Braze! This is an in-app message.");
                             message.slideFrom = braze.InAppMessage.SlideFrom.TOP;
+                            
                             braze.showInAppMessage(message);   
                         }
                             
@@ -270,24 +280,26 @@
                             messageBtn2.textColor = 0xffffffff;
                             messageBtn2.id = "1";
                             message.buttons = [messageBtn1, messageBtn2];
+                            message.animateIn = true;
                             braze.showInAppMessage(message);
-
-                            // Registers that a user has viewed an in-app message with the Braze server.
-                            braze.logInAppMessageImpression(message);
-                            // Registers that a user has clicked on an in-app message with the Braze server.
-                            braze.logInAppMessageButtonClick(messageBtn1.id, message);
                         }
                             
                         fullIAM.onclick = function(){
                             var message = new braze.FullScreenMessage();
+                            message.header = "This is supposed Full Screen IAM header at the end";
+                            message.headerAlignment = "END";
+                            message.message = "This is full screen iam body at the start";
+                            message.messageAlignment = "START";
+                            message.animateIn = true;
+                            message.orientation = "LANDSCAPE"
                             braze.showInAppMessage(message);  
                         }
     
                         </script>
 
-                        <h4 class="m-3">Modal Custom</h4>
+                        <h4 class="m-3">Modal Custom IAM</h4>
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             Launch Bootstrap demo modal
                         </button>
                         
@@ -301,18 +313,18 @@
                                 </div>
                                 <div class="modal-body" id="customModalBody"></div>
                                 <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button id ="customModalBtn" type="button" class="btn btn-primary" data-bs-dismiss="modal"></button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button id ="customModalBtn" type="button" class="btn btn-primary" data-bs-dismiss="modal"></button>
                                 </div>
                             </div>
-                            </div>
                         </div>
+                    </div>
                         
                 </div>
             </main>
 
             <!-- this is the foot of page -->
-            <footer class="pt-5 my-5 text-muted border-top">
+            <footer class="pt-5 my-5 text-muted border-top text-center">
                 Created by Sabina Safarudin with Bootstrap & Braze Web SDK -  © 2022
             </footer>
 

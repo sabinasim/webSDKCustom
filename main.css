@@ -13,3 +13,19 @@ body .ab-feed .ab-feed-buttons-wrapper {
 p, span, div, h3, h4 {
     font-family: 'Open Sans', sans-serif;
 }
+
+.bg-img {
+    background-image: url('img/Brazel.jpg')
+}
+
+.btn-secondary {
+    background-color: #61C0BF !important;
+}
+
+.btn-secondary:hover {
+    background-color: #00ADB5 !important;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #393E46 !important;
+}
