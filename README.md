@@ -10,6 +10,7 @@ For FY2023 OKR project where customizing Content Cards and IAM on the Web SDK
   - Basic toggle with braze native buttons
   - Customised braze native content card using override css
   - Custom in webpage HTML that displays incoming content card (but only 1 at a time)
+  - Attempt at doing dynamic carousel that populates image
   
 - Integration and Customisation of In App message
   - Basic integration with IAM but instead of automatically showing IAM, use subscribeToInAppMessage() to manually display IAM with button toggle
