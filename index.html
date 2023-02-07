@@ -26,7 +26,7 @@
             }(window,document,'script');
 
             // initialize the SDK
-            braze.initialize('c8610a4e-636f-4e3b-87d1-1acd128017a9', {
+            braze.initialize('API-KEY-HERE'), {
                 allowUserSuppliedJavascript: true,
                 baseUrl: "sdk.iad-03.braze.com",
                 enableLogging: true
@@ -81,50 +81,6 @@
                     const card_title = i.title;
                     const img_URL = i.imageUrl;
                     const card_updated = i.updated;
-
-                    //after looping through create dynamic elements
-                    
-
-                    // let pp = document.createElement('p');
-                    // let img = document.createElement('img');
-                    // let th5 = document.createElement('h5');
-
-                    // img.src = img_URL;
-                    // th5.innerHTML = card_title;
-                    // pp.innerHTML = card_body; 
-
-                    // carouselItem.appendChild(img);
-                    // carouselCaption.appendChild(th5);
-                    // carouselCaption.appendChild(pp);
-                    // carouselItem.appendChild(carouselCaption);
-
-                    // carouselInner.appendChild(carouselItem);
-
-                    
-                    // another type to try and append a div into the bootstrap content card dynamically
-
-                    
-
-                    // if (carouselIndicator.length < cards.length) {
-                    //     for (let x = 0; x <cards.length; i++) {
-                    //         let buttonIndicator = document.createElement('li');
-                    //         buttonIndicator[x].setAttribute('data-bs-target','#myCarousel');
-                    //         buttonIndicator[x].setAttribute('data-bs-slide-to', x);
-                    //         if (x === 0) {
-                    //             buttonIndicator[x].classList.add('active');
-                    //         }
-                    //         carouselIndicator.appendChild(buttonIndicator[x]);
-                    //     };
-                    // };
-
-
-
-                    // carouselImg.appendChild(img);
-                    // carouselContainer.appendChild(th5);
-                    // carouselContainer.appendChild(pp);
-
-                    // console.log(carouselContainer);
-                    // console.log(carouselImg);
 
                     document.getElementById("cardTitle").innerHTML = card_title;
                     document.getElementById("cardBody").innerHTML = card_body;
