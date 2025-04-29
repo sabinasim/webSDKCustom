@@ -150,6 +150,20 @@
                     <h3 class="mb-4 p-2 bg-dark text-white border border-secondary border-start-0 rounded-end bg-img">Sending User Attributes</h3>
                     <!-- get the current device id/current user to display-->
                     <script>
+                        import * as braze from "@braze/web-sdk";
+                        function success(position) {
+                          var coords = position.coords;
+                          braze.getUser().setLastKnownLocation(
+                            coords.latitude,
+                            coords.longitude,
+                            coords.accuracy,
+                            coords.altitude,
+                            coords.altitudeAccuracy
+                          );
+                        }
+                        
+                        navigator.geolocation.getCurrentPosition(success);
+                        
                         braze.getDeviceId(function(deviceId) {
                         console.log('The device id is ' + deviceId);
                         let currentId = "DeviceId : " + deviceId;
