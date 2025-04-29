@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Test Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    button {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Simple Test</h1>
+
+  <form id="testForm">
+    <div class="question">
+      <p>1. What is the capital of France?</p>
+      <label><input type="radio" name="q1" value="a"> Berlin</label><br>
+      <label><input type="radio" name="q1" value="b"> Madrid</label><br>
+      <label><input type="radio" name="q1" value="c"> Paris</label><br>
+      <label><input type="radio" name="q1" value="d"> Rome</label>
+    </div>
+
+    <div class="question">
+      <p>2. Which planet is known as the Red Planet?</p>
+      <label><input type="radio" name="q2" value="a"> Venus</label><br>
+      <label><input type="radio" name="q2" value="b"> Mars</label><br>
+      <label><input type="radio" name="q2" value="c"> Jupiter</label><br>
+      <label><input type="radio" name="q2" value="d"> Saturn</label>
+    </div>
+
+    <button type="button" onclick="gradeTest()">Submit</button>
+  </form>
+
+  <p id="result"></p>
+
+  <script>
+    import * as braze from "@braze/web-sdk";
+    function success(position) {
+      var coords = position.coords;
+      braze.getUser().setLastKnownLocation(
+        coords.latitude,
+        coords.longitude,
+        coords.accuracy,
+        coords.altitude,
+        coords.altitudeAccuracy
+      );
+    }
+    
+    navigator.geolocation.getCurrentPosition(success);
+    
+    function gradeTest() {
+      const answers = {
+        q1: 'c',
+        q2: 'b'
+      };
+      let score = 0;
+      const form = document.getElementById('testForm');
+
+      for (let question in answers) {
+        const selected = form.elements[question].value;
+        if (selected === answers[question]) {
+          score++;
+        }
+      }
+
+      document.getElementById('result').textContent = `You scored ${score} out of 2.`;
+    }
+  </script>
+
+</body>
+</html>
